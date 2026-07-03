@@ -4,10 +4,11 @@ import requests,io
 from datetime import datetime
 import urllib3
 import os
-from dotenv import load_dotenv
+from dotenv import load_dotenv  
 
 load_dotenv()
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 
 def get_data():
     print("取得PM2.5資料中")
@@ -23,7 +24,8 @@ def get_data():
     except Exception as e:
         print(e)
 
-    return None    
+    return None
+
 
 def insert_data(data):
     #mysql 忽略語法跟佔位符不一樣
@@ -37,17 +39,20 @@ def insert_data(data):
         else:
             print(f"更新{cursor.rowcount}筆資料!")
     except Exception as e:
-        print(e)
+        print(e)   
+
+
+
 
 
 def open_db():
     try:
         conn=pymysql.connect(
-            host="gateway01.ap-northeast-1.prod.aws.tidbcloud.com",
-            port=int(os.getenv("Port")),
-            user=os.getenv("User"),
-            password=os.getenv("Password"),
-            database=os.getenv("Name"),
+            host=os.getenv("HOST"),
+            port=int(os.getenv("PORT")),
+            user=os.getenv("USER"),
+            password=os.getenv("PASSWORD"),
+            database=os.getenv("NAME"),
             ssl={"ca":None}
          )
     
@@ -85,8 +90,8 @@ def create_table():
         print(e)
 
 print("----------------------------------------")
-print(f"運行時間:{datetime.now()}")
 
+print(f"運行時間:{datetime.now()}")
 conn,cursor=open_db()
 if conn:
     print("開啟資料庫成功")
