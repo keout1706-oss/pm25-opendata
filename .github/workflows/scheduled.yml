@@ -1,0 +1,39 @@
+name: Scheduled Python Script
+
+on:
+  schedule:
+    - cron: '59 15 * * *' # 每天國際標準時間 00:00 (台灣時間23:59) 
+  workflow_dispatch: # ⼿動觸發
+
+jobs:
+  run-python:
+    runs-on: ubuntu-latest
+    
+    
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+
+    - name: Install dependencies
+      run: |
+        if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+
+          
+    - name: Run script
+      run: python pm25.py
+      env:
+        HOST= ${{ secrets.HOST }}
+        PORT= ${{ secrets.PORT }}
+        USER= ${{ secrets.USER }}
+        PASSWORD=${{ secrets.PASSWORD }}
+        NAME=${{ secrets.NAME }}
