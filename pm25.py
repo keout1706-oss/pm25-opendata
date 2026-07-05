@@ -47,17 +47,17 @@ def insert_data(data):
 
 def open_db():
     try:
+        #print(os.environ.get("HOST")) // os.getenv給本地端dotenv使用  
         conn=pymysql.connect(
-            host=os.getenv("HOST"),
-            port=int(os.getenv("PORT")),
-            user=os.getenv("USER"),
-            password=os.getenv("PASSWORD"),
-            database=os.getenv("NAME"),
+            host=os.environ.get("HOST"),
+            port=int(os.environ.get("PORT")),
+            user=os.environ.get("USER"),
+            password=os.environ.get("PASSWORD"),
+            database=os.environ.get("NAME"),
             ssl={"ca":None}
          )
     
         cursor=conn.cursor()
-
         return conn, cursor
     except Exception as e:
         print(e)
